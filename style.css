@@ -1,0 +1,507 @@
+/*Importing from goolefonts*/
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@100&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nova+Cut&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cuprum&display=swap');
+
+/* Applies to all HTML5 elements */
+* {
+	box-sizing: border-box;
+}
+
+body {
+	height: 100%;
+    margin: 0;
+    font-family: 'Raleway', sans-serif;
+	background: linear-gradient(to left, #24c6dc, #514a9d);
+}
+
+::selection {
+    background-color: black;
+    color: #378E9B;
+}
+
+/* Hamburger CSS */
+
+header{
+	position: fixed;
+  	z-index: 2;
+  	width: 100%; 
+	background: rgba(248, 173, 69, 1)
+}
+
+a{
+	color: #fff;
+	text-decoration: none;
+}
+
+i{
+	font-size: 150%;
+	transition: all 0.3s ease-out;
+}
+
+i:hover{
+	font-size: 175%;
+}
+
+/*Hamburger Icon*/
+.burger{
+	position: fixed;
+	cursor: pointer;
+	z-index: 3;
+	padding: 2em;
+	transition: all 0.5s ease-out;
+	-webkit-tap-highlight-color: transparent;
+}
+
+.line1, .line2, .line3{
+	width: 35px;
+ 	height: 5px;
+ 	border-radius: 8px;
+  	background-color: rgba(0, 0, 0, 1);
+  	margin: 6px 5px;
+    transition: all 0.5s ease;
+}
+
+.burger.close{
+	transform: rotate(360deg);
+}
+
+/*'A'nimation*/
+.burger.close .line1{
+	transform: rotate(-65deg) translate(-8px, -6px);
+}
+
+.burger.close .line2{
+	width: 20px;
+    transform: translate(5.5px , 0);
+}
+
+.burger.close .line3{
+	transform: rotate(65deg) translate(-13px, -11px);
+}
+
+.menu{
+	position: fixed;
+    top: 0;
+    width: 100%;
+    opacity: 0.8;
+    visibility: hidden;
+}
+
+.menu.show{
+    visibility: visible;
+}
+
+.info, .hid{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+    justify-content: center;
+    float: left;
+    list-style: none;
+    width: 50%;
+    min-height: 100vh;
+    overflow: hidden;
+	margin: 0;
+    padding: 0;
+}
+
+.info{
+    background: orange;
+    transform: translate3d(-100%, 0, 0);
+    transition: all 0.5s ease-out;
+}
+
+.info.show{
+    transform: translate3d(0, 0, 0);
+}
+
+.hid{
+	background: lightgreen;
+    transform: translate3d(0, -100%, 0);
+    transition: all 0.5s ease-out;
+}
+
+.hid.show{
+	transform: translate3d(0, 0, 0);
+}
+
+.menu .nav-item{
+    transform: translate3d(600px, 0, 0);
+    transition: all 0.5s ease-out;
+}
+
+.menu .nav-item.show{
+    transform: translate3d(0, 0, 0);
+}
+
+.menu .nav-link{
+    display: inline-block;
+    position: relative;
+    font-size: 30px;
+    text-transform: uppercase;
+    padding: 3rem 0;
+    font-weight: 600;
+    color: #fff;
+    text-decoration: none;
+    transition: all 0.5s ease-out;
+	-webkit-tap-highlight-color: transparent;
+}
+
+.menu .nav-link:hover {
+	font-family: 'Nova Cut', sans-serif;
+    color: white;
+}
+
+.nav-item:nth-child(1){
+	transition-delay: 0.1s;
+}
+
+.nav-item:nth-child(2){
+	transition-delay: 0.2s;
+}
+
+.nav-item:nth-child(3){
+	transition-delay: 0.3s;
+}
+
+.nav-item:nth-child(4){
+	transition-delay: 0.4s;
+}
+
+.nav-item:nth-child(5){
+	transition-delay: 0.5s;
+}
+
+.nav-link::selection {
+    background-color: black;
+    color: orange;
+}
+
+/*Animated fade out*/
+.animated{
+    animation-duration: 10s;
+    animation-fill-mode: both;
+}
+
+.animated-2{
+	animation-duration: 20s;
+    animation-fill-mode: both;
+}
+         
+@keyframes fadeIn{
+    0% {opacity: 0;}
+    100% {opacity: 1;}
+}
+         
+.fadeIn{
+	animation-name: fadeIn;
+}
+
+h1{
+	font-size: 3em;
+	text-align: center;
+	padding-top: 6em;
+	letter-spacing: 3px;
+}
+
+h2{
+	font-size: 4em;
+	text-align: center;
+	padding: 1.5em 0;
+	letter-spacing: 3px;
+
+}
+
+h3{
+	font-size: 2em;
+	font-family: 'Nova Cut', sans-serif;
+	text-align: center;
+	padding: 1.5em 0;
+	letter-spacing: 3px;
+}
+
+.main-1{
+	font-size: 2em;
+	font-weight: 500;
+	font-family: 'Cuprum', sans-serif;
+	text-align: center;
+}
+
+/*Fade in overlay*/
+.container{
+	display: inline-block;
+	position: relative;
+	
+  	width: 19%;
+}
+
+.image {
+	display: block;
+	width: 100%;
+	height: 22vh;
+}
+
+.overlay {
+	position: absolute;
+  	top: 0;
+ 	bottom: 0;
+	left: 0;
+ 	right: 0;
+  	height: 100%;
+ 	width: 100%;
+ 	opacity: 0;
+ 	transition: .5s ease;
+ 	background-color: grey;
+}
+
+.container:hover .overlay {
+  opacity: 0.9;
+}
+
+.text {
+	color: white;
+  	font-size: 1.4em;
+	font-weight: 800;
+  	position: absolute;
+  	top: 50%;
+  	left: 50%;
+  	transform: translate(-50%, -50%);
+ 	transform: translate(-50%, -50%);
+  	text-align: center;
+}
+
+.skill{
+	padding-left: 3rem;
+}
+
+.heading-2{
+	text-align: center;
+	font-size: 150%;
+	font-weight: 800;
+	letter-spacing: 5px;
+}
+
+.main-container{
+	display: flex;
+	justify-content: space-around;
+	opacity: 0.8;
+	height: 50vh;
+}
+
+.container-links{
+	-webkit-tap-highlight-color: transparent;
+}
+
+.container-links i{
+	font-size: 5em;
+	color: lightgreen;
+	padding: 15px 50px;
+}
+
+.container-links i:hover{
+	font-size: 4em;
+	opacity: 5;
+}
+
+.form{
+	margin: 0 20px;
+}
+
+.input-field {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+}
+
+.inp-half{
+	width: 48%;
+	height: 3em;
+	box-sizing: border-box;
+    border: 2px solid orange;
+    border-radius: 4px;
+	outline: none;
+    margin-bottom: 1rem;
+}
+
+textarea {
+    width: 100%;
+    height: 10em;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border: 2px solid orange;
+    border-radius: 4px;
+	outline: none;
+    font-size: 16px;
+    justify-content: center;
+    resize: none;
+    margin-bottom: 1rem;
+}
+
+.form-btns {
+	display: flex;
+	justify-content: space-between;
+}
+
+.btn{
+	width: 48%;
+	display: inline-block;
+	padding: 10px 25px;
+	background-color: orange;
+	border-radius: 0.5em;
+	outline: none;
+	cursor: pointer;
+	-webkit-tap-highlight-color: transparent;
+}
+
+::placeholder{
+	font-size: 125%;
+	font-weight: 300;
+}
+
+footer{
+	font-family: Verdana;
+	font-size: 125%;
+	position: absolute;
+	text-align: center;
+	background-color: orange;
+	opacity: 0.7;
+	min-height: 3em;
+	width: 100%;
+	padding-top: 1em;
+}
+
+/*Mobile Phones*/
+@media only screen and (max-width: 768px) {
+	h1 {
+		padding-top: 10rem;
+	}
+	
+	.animation {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		height: 80vh;
+	}
+
+	.image, .overlay{
+		margin-left: 40%;
+		margin-bottom: 20px;
+	}
+
+	.container{
+		display: block;
+		width: 60%;
+		height: 30%;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.menu .nav-link {
+		font-size: 1.5rem;
+	}
+
+	.main-container{
+		height: auto;
+		display: block;
+	}
+
+	.container-links{
+		padding: 50px 0;
+	}
+
+	.container-links-align {
+		display: flex;
+		justify-content: space-around;
+	}
+
+	.skill {
+		padding-left: 0;
+		padding-right: 1rem;
+	}
+
+	.cards-set {
+		display: inline-block !important;
+		margin-right: 30px;
+	}
+
+	.card {
+		width: 100% !important;
+	}
+
+}
+
+#myprojects h2 {
+	display: block;
+}
+
+.cards-set {
+	display: flex;
+}
+
+/* Card Styling */
+
+.card {
+	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+	transition: 0.3s;
+	width: 50%;
+	border-radius: 5px;
+	margin: 1rem;
+	background: whitesmoke;
+}
+
+.card a{
+	-webkit-tap-highlight-color: transparent;
+}
+
+.card:hover {
+	box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+/* Foodie BG/Txt Highlighting */
+.foodie > p::selection,.foodie > h4 > b::selection, .foodie > span::selection {
+    background-color: orange;
+    color: black;
+}
+
+/* Roovie BG/Txt Highlighting */
+.roovie > p::selection,.roovie > h4 > b::selection, .roovie > span::selection {
+    background-color: #4079B5;
+    color: black;
+}
+
+/* Blooger BG/Txt Highlighting */
+.blooger > p::selection,.blooger > h4 > b::selection, .blooger > span::selection {
+    background-color: #438D80;
+    color: black;
+}
+  
+.card-container {
+	padding: 12px 2rem;
+}
+
+.card-container h4 {
+	font-size: 2rem;
+	margin: 5px 0;
+}
+
+.card-container p {
+	font-size: 1.2rem;
+	font-weight: 700;
+}
+
+.card-container span {
+	font-weight: 800;
+}
+
+.card-img {
+	opacity: 1;
+	transition: all 0.3s ease-in-out;
+	border-radius: 5px 5px 0 0;
+}
+
+.card-img:hover {
+	cursor: pointer;
+	opacity: 0.8;
+}
