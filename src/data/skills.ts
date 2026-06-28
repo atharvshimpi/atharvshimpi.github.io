@@ -1,0 +1,67 @@
+import type { SkillCategory } from '../types'
+
+export const skillCategories: SkillCategory[] = [
+  {
+    id: 'languages',
+    label: 'Languages',
+    chips: [
+      { label: 'Java', primary: true },
+      { label: 'C#', primary: true },
+      { label: 'JavaScript', primary: true },
+      { label: 'C++', primary: true },
+      { label: 'TypeScript' },
+      { label: 'Python' },
+      { label: 'SQL' },
+      { label: 'HTML' },
+      { label: 'CSS' },
+      { label: 'LESS' },
+    ],
+  },
+  {
+    id: 'frameworks',
+    label: 'Frameworks & Services',
+    chips: [
+      { label: 'Spring Boot', primary: true },
+      { label: 'React', primary: true },
+      { label: 'React Native' },
+      { label: 'Django' },
+      { label: '.NET Core' },
+      { label: '.NET Framework' },
+      { label: 'Node.js' },
+      { label: 'MongoDB' },
+      { label: 'PostgreSQL' },
+      { label: 'Redis' },
+      { label: 'Firebase' },
+      { label: 'Webpack' },
+    ],
+  },
+  {
+    id: 'aiCloud',
+    label: 'AI & Cloud',
+    chips: [
+      { label: 'AWS' },
+      { label: 'Claude Code' },
+      { label: 'Gemini AI' },
+      { label: 'Groq' },
+      { label: 'OpenAI' },
+      { label: 'YOLOv8' },
+    ],
+  },
+  {
+    id: 'tools',
+    label: 'Tools',
+    chips: [
+      { label: 'Git' },
+      { label: 'GitHub' },
+      { label: 'Docker' },
+      { label: 'Jest' },
+      { label: 'CI/CD' },
+      { label: 'Azure DevOps' },
+      { label: 'Linux' },
+      { label: 'Bash Scripting' },
+      { label: 'VS Code' },
+      { label: 'Visual Studio' },
+      { label: 'Expo' },
+    ],
+  },
+]
