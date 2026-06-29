@@ -37,7 +37,7 @@ export default function Home({ onNavigate, isActive }: HomeProps) {
           </button>
           <a
             className="btn-ghost"
-            href="https://drive.google.com/file/d/1J1zrA5TPLtDDZw5UTIGfizqkzqbTvskI/view?usp=sharing"
+            href="https://drive.google.com/file/d/15_J2rMKxH5CeHR50l2srdRckzUVoJ4c2/view?usp=sharing"
             target="_blank"
             rel="noreferrer"
           >

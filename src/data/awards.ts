@@ -30,7 +30,7 @@ export const awards: AwardEntry[] = [
     description:
       'Nominated for exemplifying a growth mindset by proactively owning project tasks, quickly acquiring new skills, supporting critical deliveries, and ensuring high-quality outputs through continuous learning, dedication, and a strong sense of initiative.',
     org: 'Aurigo',
-    certificateUrl: 'assets/awards/Spotlight Award Akshata.pdf',
+    certificateUrl: 'https://drive.google.com/file/d/14Kln0n5FreFyxzjMxtRVT1sZj9h6LvvY/view?usp=sharing',
   },
   {
     emoji: '🏅',
@@ -38,7 +38,7 @@ export const awards: AwardEntry[] = [
     description:
       'Demonstrated an outstanding proactive approach in bug analysis, ensuring timely identification and resolution. With consistent and prompt updates, eliminated the need for follow-ups, showcasing dedication and reliability.',
     org: 'Aurigo',
-    certificateUrl: 'assets/awards/Spotlight Award Lakshmi.pdf',
+    certificateUrl: 'https://drive.google.com/file/d/1efOSvRIEAMFpwXJO_7l_Q4GECGCP0aav/view?usp=sharing',
   },
   {
     emoji: '🥇',
@@ -46,7 +46,7 @@ export const awards: AwardEntry[] = [
     description:
       'Received for going above and beyond in delivering a high-impact feature ahead of schedule.',
     org: 'Aurigo',
-    certificateUrl: 'assets/awards/Bravo Award Harish.pdf',
+    certificateUrl: 'https://drive.google.com/file/d/11u0KxIubh9jrc9eHaGJ7-7Xe7_sLbYJc/view?usp=sharing',
   },
   {
     emoji: '🏆',
@@ -54,7 +54,7 @@ export const awards: AwardEntry[] = [
     description:
       "Secured 1st place out of 32 teams in Aurigo's company-wide hackathon.",
     org: 'Aurigo',
-    certificateUrl: 'assets/awards/Hackathon Champions.pdf',
+    certificateUrl: 'https://drive.google.com/file/d/1hyJnxxzgyg1juIEQJEDlQa70RBG2n6du/view?usp=sharing',
   },
   {
     emoji: '🤝',
@@ -62,6 +62,6 @@ export const awards: AwardEntry[] = [
     description:
       'Great team collaboration to deliver amazing value and benefits to customers. The team worked hard to pull an amazing product launch that was well received by all customers at the AOS Summit.',
     org: 'Aurigo',
-    certificateUrl: 'assets/awards/Team Award Masterworks.pdf',
+    certificateUrl: 'https://drive.google.com/file/d/10e_-_lmyVJzw5Sgdq5Eqa_ysO5vJhk0Z/view?usp=sharing',
   },
 ]

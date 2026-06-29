@@ -3,6 +3,7 @@ import Nav from './components/Nav'
 import MobileDrawer from './components/MobileDrawer'
 import CodeBackground from './components/CodeBackground'
 import TypingGameModal from './components/TypingGameModal'
+import LaserPointer from './components/LaserPointer'
 import Home from './pages/Home'
 import About from './pages/About'
 import Experience from './pages/Experience'
@@ -29,6 +30,7 @@ export default function App() {
   return (
     <>
       <CodeBackground />
+      <LaserPointer />
 
       <Nav
         currentPage={currentPage}
@@ -58,4 +60,3 @@ export default function App() {
     </>
   )
 }
-
