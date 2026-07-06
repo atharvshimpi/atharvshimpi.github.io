@@ -4,6 +4,7 @@ import MobileDrawer from './components/MobileDrawer'
 import CodeBackground from './components/CodeBackground'
 import TypingGameModal from './components/TypingGameModal'
 import LaserPointer from './components/LaserPointer'
+import LaserSlicerGame from './components/LaserSlicerGame'
 import Home from './pages/Home'
 import About from './pages/About'
 import Experience from './pages/Experience'
@@ -17,6 +18,7 @@ export default function App() {
   const { currentPage, goTo } = usePageRouter('home')
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [typingGameOpen, setTypingGameOpen] = useState(false)
+  const [slicerOpen, setSlicerOpen] = useState(false)
 
   function navigate(page: PageId) {
     goTo(page)
@@ -30,7 +32,8 @@ export default function App() {
   return (
     <>
       <CodeBackground />
-      <LaserPointer />
+      {/* LaserPointer only active when slicer game is NOT open */}
+      {!slicerOpen && <LaserPointer />}
 
       <Nav
         currentPage={currentPage}
@@ -38,6 +41,7 @@ export default function App() {
         drawerOpen={drawerOpen}
         onToggleDrawer={() => setDrawerOpen((open) => !open)}
         onOpenTypingGame={() => setTypingGameOpen(true)}
+        onOpenSlicerGame={() => setSlicerOpen(true)}
       />
 
       <MobileDrawer isOpen={drawerOpen} onNavigate={navigateFromDrawer} />
@@ -47,10 +51,11 @@ export default function App() {
         onClose={() => setTypingGameOpen(false)}
       />
 
-      {/* All pages stay mounted so each retains its own internal tab state
-          (Projects, Skills) between visits. Each page receives `isActive`
-          and applies the "active" class to its own root .page div, matching
-          the original CSS-driven fade/slide transition exactly. */}
+      <LaserSlicerGame
+        isOpen={slicerOpen}
+        onClose={() => setSlicerOpen(false)}
+      />
+
       <Home onNavigate={navigate} isActive={currentPage === 'home'} />
       <About isActive={currentPage === 'about'} />
       <Experience isActive={currentPage === 'experience'} />

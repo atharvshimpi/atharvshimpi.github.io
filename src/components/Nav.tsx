@@ -6,6 +6,7 @@ interface NavProps {
   drawerOpen: boolean
   onToggleDrawer: () => void
   onOpenTypingGame: () => void
+  onOpenSlicerGame: () => void
 }
 
 const NAV_ITEMS: { id: PageId; label: string }[] = [
@@ -23,6 +24,7 @@ export default function Nav({
   drawerOpen,
   onToggleDrawer,
   onOpenTypingGame,
+  onOpenSlicerGame,
 }: NavProps) {
   return (
     <nav>
@@ -38,9 +40,21 @@ export default function Nav({
             onOpenTypingGame()
           }}
           title="Type fast?"
-          aria-label="Easter egg"
+          aria-label="Typing speed test"
         >
           {'</>'}
+        </button>
+        <button
+          className="egg-trigger"
+          onClick={(e) => {
+            e.stopPropagation()
+            onOpenSlicerGame()
+          }}
+          title="Play Laser Slicer"
+          aria-label="Laser Slicer game"
+          style={{ marginLeft: '.2rem', fontSize: '.85rem' }}
+        >
+          ⚔️
         </button>
       </div>
 

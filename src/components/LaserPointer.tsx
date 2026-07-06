@@ -6,7 +6,7 @@ interface Point {
   age: number // ms since this point was added
 }
 
-const TRAIL_LIFETIME_MS = 800 // how long a point stays visible before fully fading
+const TRAIL_LIFETIME_MS = 900 // how long a point stays visible before fully fading
 const MAX_POINTS = 80 // safety cap so the trail never grows unbounded
 const LASER_COLOR = '91, 191, 191' // matches --teal RGB, kept as a constant for the glow
 const LONG_PRESS_MS = 350 // how long a touch must be held before the laser activates on mobile
