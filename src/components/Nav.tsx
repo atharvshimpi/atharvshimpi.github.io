@@ -54,7 +54,7 @@ export default function Nav({
           aria-label="Laser Slicer game"
           style={{ marginLeft: '.2rem', fontSize: '.85rem' }}
         >
-          ⚔️
+          ⚡
         </button>
       </div>
 

@@ -1,10 +1,5 @@
 import { useEffect, useRef } from 'react'
-
-interface Point {
-  x: number
-  y: number
-  age: number // ms since this point was added
-}
+import { addTrailPoint, ageTrailPoints, drawLaserTrail, type TrailPoint } from '../utils/laserTrail'
 
 const TRAIL_LIFETIME_MS = 900 // how long a point stays visible before fully fading
 const MAX_POINTS = 80 // safety cap so the trail never grows unbounded
@@ -14,7 +9,7 @@ const LONG_PRESS_MOVE_TOLERANCE = 10 // px of finger movement allowed before can
 
 export default function LaserPointer() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const pointsRef = useRef<Point[]>([])
+  const pointsRef = useRef<TrailPoint[]>([])
   const isActiveRef = useRef(false)
   const lastTimeRef = useRef<number>(performance.now())
   const longPressTimerRef = useRef<number | null>(null)
@@ -29,36 +24,17 @@ export default function LaserPointer() {
     let animationFrameId: number
 
     function resize() {
-      if (!canvas) return
-      canvas.width = window.innerWidth
-      canvas.height = window.innerHeight
+      if (!canvas || !ctx) return
+      // Render at native resolution so the thin glowing line stays sharp on
+      // high-DPI displays instead of being upscaled from a 1x buffer.
+      const dpr = window.devicePixelRatio || 1
+      canvas.width = window.innerWidth * dpr
+      canvas.height = window.innerHeight * dpr
+      ctx.scale(dpr, dpr)
     }
 
     function addPoint(x: number, y: number) {
-      const points = pointsRef.current
-      const last = points[points.length - 1]
-      if (last) {
-        const dx = x - last.x
-        const dy = y - last.y
-        const distSq = dx * dx + dy * dy
-        if (distSq < 9) return // ~3px minimum movement, skip near-duplicate points
-
-        // Fast movement = fewer mousemove events = large gaps between points,
-        // which is what causes the trail to look like straight angular
-        // segments. Fill in intermediate points along the gap so the curve
-        // has enough resolution to stay smooth even at high speed.
-        const dist = Math.sqrt(distSq)
-        const maxStep = 14 // px between interpolated points
-        if (dist > maxStep) {
-          const steps = Math.floor(dist / maxStep)
-          for (let i = 1; i <= steps; i++) {
-            const t = i / (steps + 1)
-            points.push({ x: last.x + dx * t, y: last.y + dy * t, age: 0 })
-          }
-        }
-      }
-      points.push({ x, y, age: 0 })
-      if (points.length > MAX_POINTS) points.splice(0, points.length - MAX_POINTS)
+      addTrailPoint(pointsRef.current, x, y, { minDist: 3, maxPoints: MAX_POINTS })
     }
 
     function handleContextMenu(e: MouseEvent) {
@@ -94,6 +70,15 @@ export default function LaserPointer() {
         window.clearTimeout(longPressTimerRef.current)
         longPressTimerRef.current = null
       }
+    }
+
+    function handleWindowBlur() {
+      // Covers alt-tab / OS gestures that end the press without a mouseup,
+      // touchend, or touchcancel ever firing — without this the laser can
+      // get stuck "active" and keep drawing on the next mouse move.
+      clearLongPressTimer()
+      isActiveRef.current = false
+      touchStartRef.current = null
     }
 
     function handleTouchStart(e: TouchEvent) {
@@ -142,94 +127,12 @@ export default function LaserPointer() {
       const dt = now - lastTimeRef.current
       lastTimeRef.current = now
 
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight)
 
       const points = pointsRef.current
-      // Age all points and drop ones that have fully faded
-      for (let i = points.length - 1; i >= 0; i--) {
-        points[i].age += dt
-        if (points[i].age > TRAIL_LIFETIME_MS) points.splice(i, 1)
-      }
+      ageTrailPoints(points, dt, TRAIL_LIFETIME_MS)
+      drawLaserTrail(ctx, points, { color: LASER_COLOR, lifetimeMs: TRAIL_LIFETIME_MS })
 
-      if (points.length > 1) {
-        // Draw the trail as a SMOOTH path (quadratic curves through
-        // midpoints) so fast mouse movement doesn't look like straight
-        // angular segments — this is what Excalidraw does too.
-        //
-        // Important: if two consecutive points are abnormally far apart
-        // (e.g. the cursor jumped due to a dropped event, or the trail
-        // array briefly contained a stale point from before a reset), we
-        // break the path instead of connecting them — this is what
-        // prevents the stray long straight line cutting across the canvas.
-        const MAX_GAP = 60 // px — anything beyond this is treated as a break
-        const segments = 6 // number of overlapping passes for the taper effect
-
-        for (let pass = 0; pass < segments; pass++) {
-          const startIdx = Math.floor((pass / segments) * points.length)
-          if (startIdx >= points.length - 1) continue
-
-          const passFrac = (pass + 1) / segments // 0..1, higher = closer to head
-          const head = points[points.length - 1]
-          const headLife = 1 - head.age / TRAIL_LIFETIME_MS
-          if (headLife <= 0) continue
-
-          const slice = points.slice(startIdx)
-          if (slice.length < 2) continue
-
-          ctx.strokeStyle = `rgba(${LASER_COLOR}, ${headLife * passFrac * 0.35})`
-          ctx.lineWidth = 1.5 + passFrac * 2.5
-          ctx.lineCap = 'round'
-          ctx.lineJoin = 'round'
-          ctx.shadowColor = `rgba(${LASER_COLOR}, ${headLife * 0.6})`
-          ctx.shadowBlur = 8 * passFrac
-
-          ctx.beginPath()
-          ctx.moveTo(slice[0].x, slice[0].y)
-          let penDown = true
-
-          for (let i = 1; i < slice.length; i++) {
-            const prev = slice[i - 1]
-            const curr = slice[i]
-            const dx = curr.x - prev.x
-            const dy = curr.y - prev.y
-            const gap = Math.sqrt(dx * dx + dy * dy)
-
-            if (gap > MAX_GAP) {
-              // Break the path here: stop drawing this stretch, start a
-              // fresh subpath from the current point.
-              if (penDown) ctx.stroke()
-              ctx.beginPath()
-              ctx.moveTo(curr.x, curr.y)
-              penDown = true
-              continue
-            }
-
-            if (i < slice.length - 1) {
-              const next = slice[i + 1]
-              const mx = (curr.x + next.x) / 2
-              const my = (curr.y + next.y) / 2
-              ctx.quadraticCurveTo(curr.x, curr.y, mx, my)
-            } else {
-              ctx.lineTo(curr.x, curr.y)
-            }
-          }
-          if (penDown) ctx.stroke()
-        }
-
-        // Bright dot at the current head of the trail (the live cursor tip)
-        const head = points[points.length - 1]
-        const headLife = 1 - head.age / TRAIL_LIFETIME_MS
-        if (headLife > 0) {
-          ctx.beginPath()
-          ctx.arc(head.x, head.y, 4, 0, Math.PI * 2)
-          ctx.fillStyle = `rgba(${LASER_COLOR}, ${headLife})`
-          ctx.shadowColor = `rgba(${LASER_COLOR}, 1)`
-          ctx.shadowBlur = 16
-          ctx.fill()
-        }
-      }
-
-      ctx.shadowBlur = 0
       animationFrameId = requestAnimationFrame(draw)
     }
 
@@ -240,6 +143,7 @@ export default function LaserPointer() {
     window.addEventListener('mousemove', handleMouseMove)
     window.addEventListener('mouseup', handleMouseUp)
     window.addEventListener('mouseleave', handleMouseLeaveWindow)
+    window.addEventListener('blur', handleWindowBlur)
     window.addEventListener('touchstart', handleTouchStart, { passive: true })
     window.addEventListener('touchmove', handleTouchMove, { passive: false })
     window.addEventListener('touchend', handleTouchEnd)
@@ -253,6 +157,7 @@ export default function LaserPointer() {
       window.removeEventListener('mousemove', handleMouseMove)
       window.removeEventListener('mouseup', handleMouseUp)
       window.removeEventListener('mouseleave', handleMouseLeaveWindow)
+      window.removeEventListener('blur', handleWindowBlur)
       window.removeEventListener('touchstart', handleTouchStart)
       window.removeEventListener('touchmove', handleTouchMove)
       window.removeEventListener('touchend', handleTouchEnd)
